@@ -1,6 +1,8 @@
 package main
 
 import (
+	"crypto/rand"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"io"
@@ -46,14 +48,18 @@ func (cfg *apiConfig) handlerUploadThumbnail(w http.ResponseWriter, r *http.Requ
 	}
 
 	mediatype := header.Header.Get("Content-Type")
-	if mediatype != "image/png" || mediatype != "image/jpeg" {
+	log.Print(mediatype)
+	if mediatype != "image/png" && mediatype != "image/jpeg" {
 		respondWithError(w, http.StatusBadRequest, "Only images allowed", errors.New("only images allowed"))
 		return
 	}
 	extensions := strings.SplitAfter(mediatype, "/")
 	extension := extensions[1]
 
-	assetPath := filepath.Join(cfg.assetsRoot, videoID.String())
+	var fileName [32]byte
+	rand.Read(fileName[:])
+
+	assetPath := filepath.Join(cfg.assetsRoot, base64.RawURLEncoding.EncodeToString(fileName[:]))
 	assetPath = assetPath + "." + extension
 	rawFile, err := os.Create(assetPath)
 	if err != nil {

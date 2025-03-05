@@ -46,6 +46,7 @@ func (cfg *apiConfig) handlerUploadThumbnail(w http.ResponseWriter, r *http.Requ
 		respondWithError(w, http.StatusBadRequest, "could not process request", err)
 		return
 	}
+	defer file.Close()
 
 	mediatype := header.Header.Get("Content-Type")
 	log.Print(mediatype)
@@ -66,6 +67,7 @@ func (cfg *apiConfig) handlerUploadThumbnail(w http.ResponseWriter, r *http.Requ
 		respondWithError(w, http.StatusInternalServerError, "Unable to store local file", err)
 		return
 	}
+	defer rawFile.Close()
 
 	//old below to clean
 	video, err := cfg.db.GetVideo(videoID)

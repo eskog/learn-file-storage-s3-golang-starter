@@ -56,7 +56,6 @@ func (cfg *apiConfig) handlerUploadVideo(w http.ResponseWriter, r *http.Request)
 	defer file.Close()
 	mediaType, _, err := mime.ParseMediaType(header.Header.Get("Content-Type"))
 	if err != nil || mediaType != "video/mp4" {
-		log.Printf("Hitting here: %s", err.Error())
 		respondWithError(w, http.StatusBadRequest, "Wrong media file", err)
 		return
 	}
@@ -101,10 +100,15 @@ func (cfg *apiConfig) handlerUploadVideo(w http.ResponseWriter, r *http.Request)
 	}
 	cfg.s3Client.PutObject(context.Background(), &myParams)
 
-	fileURL := fmt.Sprintf("https://%s.s3.%s.amazonaws.com/%s", cfg.s3Bucket, cfg.s3Region, fileKeystring)
+	fileURL := fmt.Sprintf("%s%s", cfg.s3CfDistribution, fileKeystring)
 
+	bucketstring := cfg.s3Bucket + "," + fileKeystring
+	video.VideoURL = &bucketstring
 	video.VideoURL = &fileURL
 	cfg.db.UpdateVideo(video)
+	if err != nil {
+		respondWithError(w, http.StatusInternalServerError, "Error generating signedURL", err)
+	}
 	respondWithJSON(w, http.StatusOK, video)
 
 }

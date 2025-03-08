@@ -79,8 +79,6 @@ func getVideoAspectRatio(filePath string) (string, error) {
 
 	// Compute reduced aspect ratio
 	w, h := aspectRatio(adjustedWidth, height)
-	log.Printf("width: %d, height: %d, SAR: %d:%d, adjusted width: %d, aspect ratio: %d:%d",
-		width, height, sarWidth, sarHeight, adjustedWidth, w, h)
 
 	finalRatio := fmt.Sprintf("%d:%d", w, h)
 	if finalRatio != "16:9" {

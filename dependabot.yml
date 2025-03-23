@@ -3,9 +3,7 @@ updates:
   - package-ecosystem: "go"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "saturday" 
-      time: "06:00" # UTC time for the update
+      interval: "daily"
     assignees:
       - eskog 
     reviewers:
@@ -21,9 +19,7 @@ updates:
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "saturday" 
-      time: "06:00" # UTC time for the update
+      interval: "daily"
     assignees:
       - eskog
     reviewers:

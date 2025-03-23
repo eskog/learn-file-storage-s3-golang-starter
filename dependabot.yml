@@ -1,0 +1,42 @@
+version: 2
+updates:
+  - package-ecosystem: "go"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "saturday" 
+      time: "06:00" # UTC time for the update
+    assignees:
+      - eskog 
+    reviewers:
+      - eskog
+    labels:
+      - "dependencies"
+      - "go"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+  
+  # Dockerfile updates (if you have Dockerfiles in root)
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "saturday" 
+      time: "06:00" # UTC time for the update
+    assignees:
+      - eskog
+    reviewers:
+      - eskog
+    labels:
+      - "docker"
+      - "dependencies"
+    commit-message:
+      prefix: "chore(docker)"
+      include: "scope"
+
+# Optional ignore rules (example: ignore pre-releases or pinned packages)
+# ignore:
+#   - dependency-name: "github.com/some/package"
+#     versions: ["2.x"]
+
